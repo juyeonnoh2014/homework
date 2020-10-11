@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- Webpage Title -->
+    <title>나홀로 쇼핑몰</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+    <style type="text/css">
+        * {
+            font-family: 'Poor Story', cursive;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+        .img {
+            background-image: url('https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/156525512274970200.jpg?gif=1&w=960&h=960&c=c&webp=1');
+            background-size: cover;
+            background-position: center;
+            width: 500px;
+            height: 500px;
+            border-radius: 5px;
+        }
+
+        .info {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        h1, h5 {
+            display: inline-grid;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+
+        .currency {
+            color: blue;
+
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            showPost();
+        });
+
+        function showPost() {
+            alert("화면 로딩 후 잘 실행되었습니다");
+        }
+
+        function order() {
+            if ($('#order-name').val() == "") {
+                alert("주문자 이름을 채워주세요.")
+            } else if ($('#order-count').val() == "") {
+                alert("수량을 채워주세요.")
+            } else if ($('#order-address').val() == "") {
+                alert("주소를 채워주세요.")
+            } else if ($('#order-phone').val() == "") {
+                alert("전화번호를 채워주세요.")
+            } else {
+                alert("주문이 완료되었습니다.")
+            }
+        }
+
+        function showCurrency() {
+            // 여기에 코드를 입력하세요
+            // ajax 통신 통해서 환 가져오기
+            // 변경할 부분 찾기
+            // id : img-cat 중에서 src "" URL 변경
+            $.ajax({
+                type: "GET", // GET 방식으로 요청한다.
+                url: "https://api.thecatapi.com/v1/images/search",
+                data: {}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
+                success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음
+                    let catUrl = response[0]['url'];
+                    $('#img-cat').attr("src", catUrl);
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET", // GET 방식으로 요청한다.
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
+                success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음
+                    let rate = response[1]['rate'];
+                    let tempHtml = `<p>(현재 달러-원 환율: <strong>${rate}</strong>)</p>`
+                    $('#currency-info').append(tempHtml);
+                }
+            })
+        })
+
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="img"></div>
+    <div class="info">
+        <h1>미친 가격에 커피도 맛있게 잘 뽑고 생긴 것도 예쁜 커피머신</h1>
+        <h5>가격: 39,000원/개</h5>
+        <div class="currency" id="currency-info"></div>
+        <p>바쁜 현대인들에게 가장 필요한 것은 바로 커피 한 잔의 여유! 이제는 그 소중한 한 잔을 편안한 내 집에서 누려보세요.</p>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">주문자 이름</span>
+            </div>
+            <input type="text" class="form-control" id="자">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text">수량</label>
+            </div>
+            <select class="custom-select" id="order-count">
+                <option selected value=""> -- 수량을 선택하세요 --</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="4">5</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">주소</span>
+            </div>
+            <input type="text" class="form-control" id="order-address">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">전화번호</span>
+            </div>
+            <input type="text" class="form-control" id="order-phone">
+        </div>
+        <div class="order">
+            <button onclick="order()" type="button" class="btn btn-primary">주문하기</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
